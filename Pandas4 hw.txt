@@ -1,0 +1,80 @@
+Pandas4
+
+1 Problem 1 : Nth Highest Salary 
+
+sol 1:
+
+import pandas as pd
+
+def nth_highest_salary(employee: pd.DataFrame, N: int) -> pd.DataFrame:
+
+    df=employee[['salary']].drop_duplicates()
+    if ((N>len(df)) | (N<=0) ):
+        return pd.DataFrame({f'getNthHighestSalary({N})': [None]})
+    df = df.sort_values('salary', ascending=False)
+    return df.head(N).tail(1)[['salary']].rename(columns ={'salary' : f'getNthHighestSalary({N})'})
+
+
+sol 2:
+
+import pandas as pd
+
+def nth_highest_salary(employee: pd.DataFrame, N: int) -> pd.DataFrame:
+
+sal = employee['salary'].sort_values(ascending =False).drop_duplicates()
+    sec_high_sal =(None if ((N>len(sal)) | (N<=0)) else sal.iloc[N-1])
+    return pd.DataFrame({f'getNthHighestSalary({N})':[sec_high_sal]})
+
+
+
+sol 3:
+
+import pandas as pd
+
+def nth_highest_salary(employee: pd.DataFrame, N: int) -> pd.DataFrame:
+
+    result=[]
+    for i in range(len(employee)):
+        salary =employee['salary'][i]
+        if salary not in result:
+            result.append(salary)
+    result.sort(reverse =True)
+    if N > len(result) or N<= 0:
+        return pd.DataFrame({f'getNthHighestSalary({N})': [None]})
+    return pd.DataFrame({f'getNthHighestSalary({N})': [result[N-1]]})
+
+
+
+
+2 Problem 2 : Second Highest Salary 
+
+sol 1:
+
+import pandas as pd
+
+def second_highest_salary(employee: pd.DataFrame) -> pd.DataFrame:
+
+    unique_sal = employee['salary'].drop_duplicates()
+    sort_sal = unique_sal.sort_values(ascending =False)
+    if len(sort_sal)<2:
+        return pd.DataFrame({'SecondHighestSalary': [None]})
+    Sec_High_Sal = sort_sal.iloc[1]
+    return pd.DataFrame({'SecondHighestSalary' : [Sec_High_Sal]})
+
+
+sol 2:
+
+
+import pandas as pd
+
+def second_highest_salary(employee: pd.DataFrame) -> pd.DataFrame:
+
+
+    sorted_salaries = employee['salary'].sort_values(ascending=False).drop_duplicates()
+    return pd.DataFrame({
+        'SecondHighestSalary': [None if sorted_salaries.size < 2 else sorted_salaries.iloc[1]]
+    })
+
+
+
+
